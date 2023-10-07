@@ -9,6 +9,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.preprocessing.image import load_img
 from sklearn.model_selection import train_test_split
 
+import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 import os
@@ -126,7 +127,7 @@ H = model.fit(
 
 # Save the model to disk
 print("[INFO] saving object detector model...")
-model.save(MODEL_PATH, save_format="h5")
+model.save(MODEL_PATH)
 
 # Plot the model training history
 N = NUM_EPOCHS
@@ -138,4 +139,4 @@ plt.title("Bounding Box Regression Loss on Training Set")
 plt.xlabel("Epoch #")
 plt.ylabel("Loss")
 plt.legend(loc="lower left")
-plt.savefig(config_body.PLOT_PATH)
+plt.savefig(PLOT_PATH)
