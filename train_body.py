@@ -140,6 +140,7 @@ def trainModel(trainImages, trainTargets, testData, testTargets):
     # Save the model to disk
     print("[INFO] saving object detector model...")
     model.save(MODEL_PATH)
+    model.save(MODEL_PATH_H5)
     
     # Plot the model training history
     N = NUM_EPOCHS

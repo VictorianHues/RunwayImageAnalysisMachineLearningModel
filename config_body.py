@@ -9,10 +9,11 @@ IMAGES_PATH = os.path.sep.join([DATASET_PATH, r"images"])
 ANNOTATION_PATH = os.path.sep.join([DATASET_PATH, r"annotations"])
 
 MODEL_PATH = os.path.sep.join([OUTPUT, "body_detector.keras"])
+MODEL_PATH_H5 = os.path.sep.join([OUTPUT, "body_detector.h5"])
 PLOT_PATH = os.path.sep.join([OUTPUT, "plot.png"])
 TEST_FILENAMES = os.path.sep.join([OUTPUT, "test_images.txt"])
 
 INITIAL_LEARNING_RATE = 0.0001
 NUM_EPOCHS = 25
-BATCH_SIZE = 32
+BATCH_SIZE = 4
 

@@ -14,6 +14,9 @@ from tkinter import filedialog
 from PIL import Image, ImageTk
 
 
+def close_window(root):
+    root.destroy()
+
 
 def commandLineSelectImages():
     # Parse arguments
@@ -99,6 +102,66 @@ def selectCompatibleDisplayMethod():
     return imagePaths
 
 
+def commandLineSelectModel():
+    # Parse arguments
+    ap = argparse.ArgumentParser(description="Model Selection:")
+    ap.add_argument("-i", "--input", required=True, help=r"path to model file")
+    args = vars(ap.parse_args()) 
+
+    filetype = mimetypes.guess_type(args["input"])[0]
+    modelPath = [args["input"]]
+    
+
+    return modelPath
+
+
+
+def guiModelPath():
+    global guiModelPath
+    
+    filePath = filedialog.askopenfilename(
+        title="Select Model File",
+        filetypes=[("Model", "*.keras *.h5")],
+    )
+    if filePath:
+        guiModelPath = filePath
+
+
+
+def selectCompatibleDisplayMethodModel():
+    # Check if a display is available
+    try:
+        root = tk.Tk()
+        root.destroy()
+        graphicalDisplayAvailable = True
+    except tk.TclError:
+        graphicalDisplayAvailable = False
+
+    # print(graphicalDisplayAvailable)
+
+    if graphicalDisplayAvailable:
+        print("Initializing GUI file selection")
+
+        root = tk.Tk()
+        root.title("Model Selector")
+        
+        selectButton = tk.Button(root, text="Select File", command=guiModelPath)
+        selectButton.pack()
+
+        closeButton = tk.Button(root, text="Complete Selection", command=lambda: close_window(root))
+        closeButton.pack()
+    
+        root.mainloop()
+        modelPath = guiModelPath
+    else:
+        print("Initializing command line keras file selection")
+        modelPath = commandLineSelectModel()
+
+    print("Selected model: ", modelPath)
+
+    return modelPath
+
+
 
 
 if __name__ == "__main__":
@@ -106,7 +169,15 @@ if __name__ == "__main__":
 
     # load our trained bounding box regressor from disk
     print("[INFO] loading object detector...")
-    model = load_model(MODEL_PATH)
+
+    modelPath = selectCompatibleDisplayMethodModel()
+    ##print("Model loaded: ", MODEL_PATH)
+    ##model = load_model(MODEL_PATH)
+
+    print("Model loaded: ", modelPath)
+
+    model = load_model(modelPath)
+    model.summary()
 
     # loop over the images using the bounding box regression model
     for imagePath in imagePaths:
